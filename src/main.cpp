@@ -26,8 +26,8 @@ int main(int argc, char** argv)
   is_running = true;
 
   const int CAMERA = 0;
-  const int WIDTH = 1920;
-  const int HEIGHT = 1080;
+  const int WIDTH = 640;
+  const int HEIGHT = 480;
 
   //Tries to open camera
   if(!cap.open(CAMERA))
@@ -38,6 +38,8 @@ int main(int argc, char** argv)
   cap.set(CV_CAP_PROP_FRAME_WIDTH, WIDTH);
   cap.set(CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
 
+  //Launch Capture thread
+  thread t(capture);
   //Loop while waiting for VideoCapture
   while(src.empty());
 
@@ -63,6 +65,7 @@ int main(int argc, char** argv)
 
   }
 
+  t.join();
   cap.release();
   return 0;
 
