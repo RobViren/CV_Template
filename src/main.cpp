@@ -5,18 +5,27 @@
 #include <thread>
 #include <atomic>
 #include <chrono>
-#include <curl/curl.h>
 
 using namespace cv;
+using namespace std;
+
+atomic<bool> is_running;
+VideoCapture cap;
+Mat src;
+
+void capture(){
+  while(is_running){
+    cap >> src;
+  }
+}
 
 int main(int argc, char** argv)
 {
   //Opencv
-  Mat src;
   int loop_control;
-  bool is_running = true;
-  VideoCapture cap;
-  const int CAMERA = 1;
+  is_running = true;
+
+  const int CAMERA = 0;
   const int WIDTH = 1920;
   const int HEIGHT = 1080;
 
@@ -24,15 +33,19 @@ int main(int argc, char** argv)
   if(!cap.open(CAMERA))
     return 0;
 
+
   //Set Camera Vars
   cap.set(CV_CAP_PROP_FRAME_WIDTH, WIDTH);
   cap.set(CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
 
+  //Loop while waiting for VideoCapture
+  while(src.empty());
+
+
   while(is_running)
   {
 
-    //Initial Image
-    cap >> src;
+
     //Processing
 
 
